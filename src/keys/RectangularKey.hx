@@ -16,6 +16,8 @@ class RectangularKey extends KeyRenderer {
 	static inline var topOffset: Float = (100 / 8) * 2;
 	static inline var roundedCorner: Float = 100 / 8;
 
+	//TODO define legend snap points
+
 	var top: RoundedRect;
 	var bottom: RoundedRect;
 	var selected: Bool = false;

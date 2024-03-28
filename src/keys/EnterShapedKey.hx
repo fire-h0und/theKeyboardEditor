@@ -30,6 +30,8 @@ class EnterShapedKey extends KeyRenderer {
 	static inline var topOffset: Float = (100 / 8) * 2;
 	static inline var roundedCorner: Float = (100 / 1 / 8);
 
+	//TODO define legend snap points
+
 	var selected: Bool = false;
 
 	var offsetL: Float;

@@ -16,6 +16,9 @@ class SteppedKey extends KeyRenderer {
 
 	@content var topX: Float = 100 / 8; // TODO make this be actual units of 1U!
 	@content var topY: Float = (100 / 8) * 0.25;
+
+	//TODO define legend snap points
+
 	var topOffset: Float = (100 / 8) * 2;
 	var roundedCorner: Float = 100 / 8;
 	var top: RoundedRect;

@@ -115,7 +115,7 @@ class Keyboard {
 	@:optional public var keySculpt: String = "R3";
 	@:optional public var position: Array<Float> = [0.0, 0.0];
 	@:optional public var angle: Array<Float> = [0, 0];
-	@:optional public var relativeRotationCenter: Array<Float> = [];
+	@:optional public var anchor: Array<Float> = [];
 	@:optional public var size: Int = 0;
 	@:optional public var keys: Array<Key> = [];
 
@@ -212,7 +212,9 @@ class Defaults {
 	@:default("0xFFFCFCFC")
 	@:optional public var keyColor: String = "0xFFFCFCFC";
 	@:default([5.0, 5.0])
-	@:optional public var legendPosition: Array<Float> = [5.0, 5.0];
+	@:optional public var legendPosition: Array<Float> = [4.0, 4.0];
+	@:default([5.0, 5.0])
+	@:optional public var legendEdgeOffset: Array<Float> = [4.0, 4.0];
 	@:default("0xFF00000F")
 	@:optional public var legendColor: String = "0xFF00000F";
 
