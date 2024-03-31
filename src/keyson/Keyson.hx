@@ -214,7 +214,7 @@ class Defaults {
 	@:default([5.0, 5.0])
 	@:optional public var legendPosition: Array<Float> = [4.0, 4.0];
 	@:default([5.0, 5.0])
-	@:optional public var legendEdgeOffset: Array<Float> = [4.0, 4.0];
+	@:optional public var legendOffset: Array<Float> = [4.0, 4.0];
 	@:default("0xFF00000F")
 	@:optional public var legendColor: String = "0xFF00000F";
 

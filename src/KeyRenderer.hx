@@ -3,6 +3,7 @@ package;
 class KeyRenderer extends ceramic.Visual {
 	@content public var topColor: ceramic.Color;
 	@content public var bottomColor: ceramic.Color;
+	@content public var legendOffset: Array<Float>;
 	@content public var legends: Array<LegendRenderer>;
 	public var legendSnapPoints: Array<Array<Float>>;
 
@@ -35,6 +36,8 @@ class KeyRenderer extends ceramic.Visual {
 			l.depth = 50;
 			this.add(l);
 		}
+
+		trace(legendOffset);
 		super.computeContent();
 	}
 }

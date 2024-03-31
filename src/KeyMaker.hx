@@ -151,6 +151,7 @@ class KeyMaker {
 		}
 		var keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(keyboard, k, unit);
 		keyShape.legends = keyLegends;
+		keyShape.legendOffset = keyboard.defaults.legendOffset;
 
 		return keyShape;
 	}

@@ -35,7 +35,7 @@
         "keyColor": "0xFFFCFCFC",
         "legendColor": "0xff606090",
         "legendPosition": [5.12, 0],
-        "legendEdgeOffset": [2.56, 2.56]
+        "legendOffset": [5.12, 5.12]
       },
       "keyStep": [19.05, 19.05],
       "stabilizerType": "Cherry",
