@@ -1,13 +1,16 @@
 package keys;
 
 import ceramic.Shape;
+import ceramic.Quad;
 import ceramic.Border;
 import viewport.Pivot;
+import keyson.Axis;
 
 /**
  * Draws a enter shaped rectangle with nice rounded corners
  */
 class EnterShapedKey extends KeyRenderer {
+	@content public var legendBorder: Quad;
 	@content public var shape: String;
 	// North is the further away member of the pair
 	@content public var widthNorth: Float;
@@ -91,9 +94,35 @@ class EnterShapedKey extends KeyRenderer {
 		if (this.top != null)
 			this.top.destroy();
 		this.top = enterShape(widthNorth - topOffset, heightNorth - topOffset, widthSouth - topOffset, heightSouth - topOffset, topColor,
-			topX, topY);
+			0.0, 0.0);
+		this.top.pos(topX, topY);
 		this.top.depth = 5;
 		this.add(this.top);
+		trace('entershaped: ${this.top.x}');
+
+		// TODO fix the size to reflect the enter shape offset(s)
+		if (this.legendBorder != null) {
+			this.legendBorder.destroy();
+		}
+		this.legendBorder = new Quad();
+		this.legendBorder.pos(0 + this.legendOffset[Axis.X], 0 + this.legendOffset[Axis.Y]);
+		final width = if (widthNorth - topOffset > widthSouth - topOffset) {
+				widthSouth - topOffset;
+			} else {
+				widthNorth - topOffset;
+			}
+		final height = if (heightNorth - topOffset < heightSouth - topOffset) {
+				heightSouth - topOffset;
+			} else {
+				heightNorth - topOffset;
+			}
+
+		this.legendBorder.size(width - this.legendOffset[Axis.X] * 2, height - this.legendOffset[Axis.Y] * 2);
+		this.legendBorder.visible = false;
+//		this.legendBorder.color = 0xFFA7F070; // sweetie-16 lime
+//		this.legendBorder.depth = 6;
+		// do note we referece from the top edge, not keycap bottom edge!
+		this.top.add(legendBorder);
 
 		if (this.bottom != null)
 			this.bottom.destroy();
@@ -101,13 +130,23 @@ class EnterShapedKey extends KeyRenderer {
 		this.bottom.depth = 0;
 		this.add(this.bottom);
 
+		// FIXUPS and special cases:
 		if (this.shape == 'BAE' || this.shape == 'XT_2U') {
 			// all this swing is to get the shape to align right
-			this.top.x = (widthSouth - widthNorth);
+			this.top.x = (widthSouth - widthNorth + topX);
 			this.bottom.x = (widthSouth - widthNorth);
-			// this.x -= (widthSouth - widthNorth);
+			
 			// TODO align the pivot too
+		} else if (this.shape == 'ISO') {
+			// all this swing is to get the shape to align right
+			this.legendBorder.x = (widthNorth - widthSouth + this.legendOffset[Axis.X]);
 		}
+		if (this.shape == 'XT_2U') {
+			// move legends to the bottom horizontal segment
+				this.legendBorder.size(widthSouth - topOffset - this.legendOffset[Axis.X] * 2, heightSouth - topOffset - this.legendOffset[Axis.Y] * 2);
+				this.legendBorder.pos(widthNorth - widthSouth + this.legendOffset[Axis.X], heightNorth - heightSouth + this.legendOffset[Axis.Y]);
+			}
+
 
 		super.computeContent();
 	}

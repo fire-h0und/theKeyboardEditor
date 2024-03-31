@@ -31,7 +31,8 @@
 		{
 			"id": 0,
 			"defaults": {
-				"legendPosition": [5.12, 0]
+				"legendPosition": [5.12, 0],
+				"legendOffset": [5.12, 5.12]
 			},
 			"designator": "Allpad",
 			"keyStep": [

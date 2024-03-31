@@ -37,7 +37,6 @@ class KeyRenderer extends ceramic.Visual {
 			this.add(l);
 		}
 
-		trace(legendOffset);
 		super.computeContent();
 	}
 }

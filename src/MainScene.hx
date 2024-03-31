@@ -48,8 +48,8 @@ class MainScene extends Scene {
 
 		// Render keys
 		// TODO abandon this and make welcome screen work eventually
-		// openViewport(keyson.Keyson.parse(assets.text(Texts.ALLPAD)));
 		openViewport(keyson.Keyson.parse(assets.text(Texts.NUMPAD)));
+		openViewport(keyson.Keyson.parse(assets.text(Texts.ALLPAD)));
 
 		// Add stored projects to list
 		for (key in store.keys()) {
