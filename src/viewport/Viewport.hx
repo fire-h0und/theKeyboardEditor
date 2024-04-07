@@ -201,6 +201,7 @@ class Viewport extends Scene {
 					// TODO make it register mouse clicks
 					legend.component('logic', new LegendLogic(this, keycap));
 				}
+
 				workingSet.add(keycap);
 			}
 		}

@@ -10,7 +10,7 @@ class SteppedKey extends KeyRenderer {
 	/**
 	 * we are in the 1U = 100 units of scale ratio here:
 	 */
-	@content public var legendBorder: Quad;
+//	@content public var legendBorder: Quad;
 	@content public var stepWidth: Float;
 	@content public var stepHeight: Float;
 	@content public var stepOffsetX: Float;
@@ -101,9 +101,9 @@ class SteppedKey extends KeyRenderer {
 		this.legendBorder = new Quad();
 		this.legendBorder.pos(this.legendOffset[Axis.X], this.legendOffset[Axis.Y]);
 		this.legendBorder.size(top.width - this.legendOffset[Axis.X] * 2, top.height - this.legendOffset[Axis.Y] * 2);
-		this.legendBorder.visible = false;
-//		this.legendBorder.color = 0xFFA7F070; // sweetie-16 lime
-//		this.legendBorder.depth = 6;
+		this.legendBorder.visible = true;
+		this.legendBorder.color = 0xFFA7F070; // sweetie-16 lime
+		this.legendBorder.depth = 6;
 		// do note we referece from the top edge, not keycap bottom edge!
 		top.add(legendBorder);
 

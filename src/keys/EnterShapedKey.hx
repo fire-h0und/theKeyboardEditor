@@ -10,7 +10,7 @@ import keyson.Axis;
  * Draws a enter shaped rectangle with nice rounded corners
  */
 class EnterShapedKey extends KeyRenderer {
-	@content public var legendBorder: Quad;
+//	@content public var legendBorder: Quad;
 	@content public var shape: String;
 	// North is the further away member of the pair
 	@content public var widthNorth: Float;
@@ -98,7 +98,6 @@ class EnterShapedKey extends KeyRenderer {
 		this.top.pos(topX, topY);
 		this.top.depth = 5;
 		this.add(this.top);
-		trace('entershaped: ${this.top.x}');
 
 		// TODO fix the size to reflect the enter shape offset(s)
 		if (this.legendBorder != null) {
@@ -118,9 +117,9 @@ class EnterShapedKey extends KeyRenderer {
 			}
 
 		this.legendBorder.size(width - this.legendOffset[Axis.X] * 2, height - this.legendOffset[Axis.Y] * 2);
-		this.legendBorder.visible = false;
-//		this.legendBorder.color = 0xFFA7F070; // sweetie-16 lime
-//		this.legendBorder.depth = 6;
+		this.legendBorder.visible = true;
+		this.legendBorder.color = 0xFFA7F070; // sweetie-16 lime
+		this.legendBorder.depth = 6;
 		// do note we referece from the top edge, not keycap bottom edge!
 		this.top.add(legendBorder);
 

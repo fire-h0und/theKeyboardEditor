@@ -149,9 +149,30 @@ class KeyMaker {
 
 			keyShape = enterShaped;
 		}
+		// herefrom we have the legendBorder and as we know it's snap points:
+		/**
+		 * legendSnapPoints are just like anchor points:
+		 * [
+		 * [ 0.0, 0.0], [ 0.5, 0.0], [ 1.0, 0.0],
+		 * [ 0.0, 0.5], [ 0.5, 0.5], [ 1.0, 0.5],
+		 * [ 0.0, 1.0], [ 0.5, 1.0], [ 1.0, 1.0]
+		 * ]
+		 * 
+		 */
+		 keyShape.legendSnapPoints = [];
+		 // TODO we spilt it into 9 segments we will be able to click on:
+		//public var legendSnapPoints: Array<Array<Float>>;
+
 		var keyLegends: Array<LegendRenderer> = KeyMaker.createLegend(keyboard, k, unit);
 		keyShape.legends = keyLegends;
 		keyShape.legendOffset = keyboard.defaults.legendOffset;
+
+		for (pointIndex in 0...12) {
+			keyShape.legendSnapPoints[pointIndex] = [
+				snapAtThirds(pointIndex), snapAtThirds(Std.int(pointIndex/3))
+			];
+		// TODO determine the legendBorder size somehow
+		}
 
 		return keyShape;
 	}
@@ -195,5 +216,18 @@ class KeyMaker {
 	public static function getKeyShadow(color: Color): Color {
 		color.lightnessHSLuv -= 0.15;
 		return color;
+	}
+	static function snapAtThirds (f:Float):Float {
+		// return the extreme of the third
+		// <--left (zero), middle | , right (max) -->
+		switch (f % 3) {
+			case 2:
+				return 1;
+			case 1:
+				return 0.5;
+			default:
+				// we default to top & left
+				return 0;
+	 }
 	}
 }
