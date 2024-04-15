@@ -10,7 +10,7 @@ import keyson.Axis;
  * Draws a enter shaped rectangle with nice rounded corners
  */
 class EnterShapedKey extends KeyRenderer {
-//	@content public var legendBorder: Quad;
+//	@content public var legendCells: Quad;
 	@content public var shape: String;
 	// North is the further away member of the pair
 	@content public var widthNorth: Float;
@@ -99,29 +99,49 @@ class EnterShapedKey extends KeyRenderer {
 		this.top.depth = 5;
 		this.add(this.top);
 
-		// TODO fix the size to reflect the enter shape offset(s)
-		if (this.legendBorder != null) {
-			this.legendBorder.destroy();
-		}
-		this.legendBorder = new Quad();
-		this.legendBorder.pos(0 + this.legendOffset[Axis.X], 0 + this.legendOffset[Axis.Y]);
-		final width = if (widthNorth - topOffset > widthSouth - topOffset) {
-				widthSouth - topOffset;
-			} else {
-				widthNorth - topOffset;
-			}
-		final height = if (heightNorth - topOffset < heightSouth - topOffset) {
-				heightSouth - topOffset;
-			} else {
-				heightNorth - topOffset;
-			}
+		if (this.legendCells != null)
+			this.legendCells.destroy();
 
-		this.legendBorder.size(width - this.legendOffset[Axis.X] * 2, height - this.legendOffset[Axis.Y] * 2);
-		this.legendBorder.visible = true;
-		this.legendBorder.color = 0xFFA7F070; // sweetie-16 lime
-		this.legendBorder.depth = 6;
-		// do note we referece from the top edge, not keycap bottom edge!
-		this.top.add(legendBorder);
+		for (index in 0...12) {
+			legendCells.add(new Quad());
+			//cell.pos(this.legendOffset[Axis.X], this.legendOffset[Axis.Y]);
+
+			this.legendCells.items[index].pos(0 + this.legendOffset[Axis.X], 0 + this.legendOffset[Axis.Y]);
+			final width = if (widthNorth - topOffset > widthSouth - topOffset) {
+					widthSouth - topOffset;
+				} else {
+					widthNorth - topOffset;
+				}
+			final height = if (heightNorth - topOffset < heightSouth - topOffset) {
+					heightSouth - topOffset;
+				} else {
+					heightNorth - topOffset;
+				}
+
+			final X = KeyMaker.snapAtThirds (index) * top.width / 3;
+			if (index < 10) {
+				final Y = KeyMaker.snapAtThirds (Std.int(index / 3)) * top.height / 3;
+			} else {
+				// for sideprint legends snap at middle vertically and compress the height in half
+				final Y = KeyMaker.snapAtThirds (Std.int(index / 3)) * top.height / 3 + (top.height + ( bottom.height - top.height )/2) ;
+			}
+			legendCells.items[index].anchor (KeyMaker.snapAtThirds (index), KeyMaker.snapAtThirds (Std.int(index / 3)));
+			legendCells.items[index].pos (X, Y);
+			legendCells.items[index].size (0.8 * width / 3, 0.8 * height / 3);
+			legendCells.items[index].visible = true;
+			legendCells.items[index].color = 0xFFA7F070; // sweetie-16 lime
+			legendCells.items[index].depth = 6;
+			if (this.shape == 'ISO') {
+				// all this swing is to get the shape to align right
+				this.legendCells.items[index].x = (widthNorth - widthSouth + this.legendOffset[Axis.X]);
+			}
+			if (this.shape == 'XT_2U') {
+				// move legends to the bottom horizontal segment
+				this.legendCells.items[index].size(widthSouth - topOffset - this.legendOffset[Axis.X] * 2, heightSouth - topOffset - this.legendOffset[Axis.Y] * 2);
+				this.legendCells.items[index].pos(widthNorth - widthSouth + this.legendOffset[Axis.X], heightNorth - heightSouth + this.legendOffset[Axis.Y]);
+			}
+		}
+		top.add(legendCells);
 
 		if (this.bottom != null)
 			this.bottom.destroy();
@@ -136,16 +156,7 @@ class EnterShapedKey extends KeyRenderer {
 			this.bottom.x = (widthSouth - widthNorth);
 			
 			// TODO align the pivot too
-		} else if (this.shape == 'ISO') {
-			// all this swing is to get the shape to align right
-			this.legendBorder.x = (widthNorth - widthSouth + this.legendOffset[Axis.X]);
 		}
-		if (this.shape == 'XT_2U') {
-			// move legends to the bottom horizontal segment
-				this.legendBorder.size(widthSouth - topOffset - this.legendOffset[Axis.X] * 2, heightSouth - topOffset - this.legendOffset[Axis.Y] * 2);
-				this.legendBorder.pos(widthNorth - widthSouth + this.legendOffset[Axis.X], heightNorth - heightSouth + this.legendOffset[Axis.Y]);
-			}
-
 
 		super.computeContent();
 	}

@@ -20,7 +20,7 @@ class RectangularKey extends KeyRenderer {
 
 	//TODO define legend snap points
 
-//	@content public var legendBorder: Quad;
+//	@content public var legendCells: Quad;
 	var top: RoundedRect;
 	var bottom: RoundedRect;
 	var selected: Bool = false;
@@ -70,17 +70,27 @@ class RectangularKey extends KeyRenderer {
 		bottom.pos(0, 0);
 		this.add(bottom);
 
-		if (this.legendBorder != null) {
-			this.legendBorder.destroy();
+		if (this.legendCells != null)
+			this.legendCells.destroy();
+
+		for (index in 0...12) {
+			legendCells.add(new Quad());
+			//cell.pos(this.legendOffset[Axis.X], this.legendOffset[Axis.Y]);
+			final X = KeyMaker.snapAtThirds (index) * top.width / 3;
+			if (index < 10) {
+				final Y = KeyMaker.snapAtThirds (Std.int(index / 3)) * top.height / 3;
+			} else {
+				// for sideprint legends snap at middle vertically and compress the height in half
+				final Y = KeyMaker.snapAtThirds (Std.int(index / 3)) * top.height / 3 + (top.height + ( bottom.height - top.height )/2) ;
+			}
+			legendCells.items[index].anchor (KeyMaker.snapAtThirds (index), KeyMaker.snapAtThirds (Std.int(index / 3)));
+			legendCells.items[index].pos (X, Y);
+			legendCells.items[index].size (0.8 * top.width / 3, 0.8 * top.height / 3);
+			legendCells.items[index].visible = true;
+			legendCells.items[index].color = 0xFFA7F070; // sweetie-16 lime
+			legendCells.items[index].depth = 6;
 		}
-		this.legendBorder = new Quad();
-		this.legendBorder.pos(this.legendOffset[Axis.X], this.legendOffset[Axis.Y]);
-		this.legendBorder.size(top.width - this.legendOffset[Axis.X] * 2, top.height - this.legendOffset[Axis.Y] * 2);
-		this.legendBorder.visible = true;
-		this.legendBorder.color = 0xFFA7F070; // sweetie-16 lime
-		this.legendBorder.depth = 6;
-		// do note we referece from the top edge, not keycap bottom edge!
-		top.add(legendBorder);
+		top.add(legendCells);
 
 		super.computeContent();
 	}

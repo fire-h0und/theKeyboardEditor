@@ -1,6 +1,7 @@
 package;
 
 import ceramic.Quad;
+import ceramic.Group;
 
 class KeyRenderer extends ceramic.Visual {
 	@content public var topColor: ceramic.Color;
@@ -8,7 +9,7 @@ class KeyRenderer extends ceramic.Visual {
 	@content public var legendOffset: Array<Float>;
 	@content public var legends: Array<LegendRenderer>;
 
-	public var legendBorder: Quad;
+	public var legendCells: Group<Quad>;
 	public var legendSnapPoints: Array<Array<Float>>;
 	public var border: ceramic.Border;
 	@content public var pivot: viewport.Pivot;

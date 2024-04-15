@@ -149,7 +149,7 @@ class KeyMaker {
 
 			keyShape = enterShaped;
 		}
-		// herefrom we have the legendBorder and as we know it's snap points:
+		// herefrom we have the legendCells and as we know it's snap points:
 		/**
 		 * legendSnapPoints are just like anchor points:
 		 * [
@@ -171,7 +171,7 @@ class KeyMaker {
 			keyShape.legendSnapPoints[pointIndex] = [
 				snapAtThirds(pointIndex), snapAtThirds(Std.int(pointIndex/3))
 			];
-		// TODO determine the legendBorder size somehow
+		// TODO make the legendCells
 		}
 
 		return keyShape;
@@ -217,7 +217,7 @@ class KeyMaker {
 		color.lightnessHSLuv -= 0.15;
 		return color;
 	}
-	static function snapAtThirds (f:Float):Float {
+	public static function snapAtThirds (f:Float):Float {
 		// return the extreme of the third
 		// <--left (zero), middle | , right (max) -->
 		switch (f % 3) {
