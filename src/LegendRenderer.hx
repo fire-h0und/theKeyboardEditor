@@ -17,6 +17,7 @@ class LegendRenderer extends Visual {
 
 	var selected: Bool = false;
 
+	// TODO make this themeable and keycap shape dependent!
 	// we are in the 1U = 100 units of scale ratio here:
 	public var topX: Float = (100 / 8);
 	public var topY: Float = (100 / 8) * .25; // North top vs E/W ratio
@@ -42,6 +43,8 @@ class LegendRenderer extends Visual {
 		}
 		this.border = new Border();
 		this.border.pos(0, 0);
+		this.border.anchorX = this.anchorX;
+		this.border.anchorY = this.anchorY;
 		this.border.size(this.width, this.height);
 		this.border.borderColor = 0xFFB13E53; // sweetie-16 red (UI theme 2ndary accent color!)
 		this.border.borderPosition = MIDDLE;

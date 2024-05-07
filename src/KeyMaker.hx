@@ -156,35 +156,74 @@ class KeyMaker {
 	/**
 	 * Create all legends on a key
 	 */
+
+	/**
+	 * input: Array<Keyson.legend> (to acces index position and per legend properties),
+	 * 				Keyson.Keyboard (to access device wide default properties),
+	 * 				Keyson.Key (to acces this key default properties too)
+	 * output: Array<LegendRenderer> (determined positions relative to key top, ready to render)
+	 */
+	  
 	public static function createLegend(keyboard: keyson.Keyson.Keyboard, k: keyson.Keyson.Key, unit: Float): Array<LegendRenderer> {
 		var keyLegends: Array<LegendRenderer> = [];
 		var legendOffsetX: Float;
 		var legendOffsetY: Float;
+		var legendAnchorX: Float;
+		var legendAnchorY: Float;
 
-		for (l in k.legends) {
-			var currentLegendColor = Std.parseInt(l.color) ?? Std.parseInt(keyboard.defaults.legendColor) ?? Color.GRAY;
+		for (i in 0...11) {
+			/**
+			 * We run thru the predefined set:
+			 *
+			 * 0    1    2    \
+			 *                |
+			 * 3    4    5     >--- top legend positions
+			 *                |
+			 * 6    7    8    /
+			 * ___________
+			 *
+			 * 9   10   11  <-- sideprints
+			 *
+			 */
+			final l = k.legends[i] ?? null;
+			if ( l != null) {
+				var currentLegendColor = Std.parseInt(l.color) ?? Std.parseInt(keyboard.defaults.legendColor) ?? Color.GRAY;
+	
+				var symbol = new LegendRenderer();
+				symbol.content = l.legend;
+				symbol.color = currentLegendColor;
+				// herefrom the legend position matrix overrides the keyson stored position
+				// unitl further notice
 
-			var symbol = new LegendRenderer();
-			symbol.content = l.legend;
-			symbol.color = currentLegendColor;
+				/*
+				if (l.position != null) {
+					legendOffsetX = l.position[Axis.X] + keyboard.defaults.legendPosition[Axis.X];
+					legendOffsetY = l.position[Axis.Y] + keyboard.defaults.legendPosition[Axis.Y];
+				} else {
+					legendOffsetX = keyboard.defaults.legendPosition[Axis.X];
+					legendOffsetY = keyboard.defaults.legendPosition[Axis.Y];
+				}
+				*/
+				legendOffsetX = 0;
+				legendOffsetY = 0;
 
-			if (l.position != null) {
-				legendOffsetX = l.position[Axis.X] + keyboard.defaults.legendPosition[Axis.X];
-				legendOffsetY = l.position[Axis.Y] + keyboard.defaults.legendPosition[Axis.Y];
-			} else {
-				legendOffsetX = keyboard.defaults.legendPosition[Axis.X];
-				legendOffsetY = keyboard.defaults.legendPosition[Axis.Y];
+				// calculate legend anchor position:
+				legendAnchorX = snapAtThirds (i);
+				legendAnchorY = snapAtThirds (Std.int(i / 3));
+				
+				// if omitted the size equals to null, but we ignore zero too
+				if (l.legendSize != 0 && l.legendSize != null) {
+					symbol.fontSize = l.legendSize;
+				} else {
+					symbol.fontSize = keyboard.keyboardFontSize;
+				}
+				// do note we reference from keycap top edge here:
+				symbol.pos(legendOffsetX + symbol.topX, legendOffsetY + symbol.topY);
+				symbol.anchor(legendAnchorX, legendAnchorY);
+				symbol.depth = 50;
+	
+				keyLegends.push(symbol);
 			}
-			// if omitted the size equals to null, but we ignore zero too
-			if (l.legendSize != 0 && l.legendSize != null) {
-				symbol.fontSize = l.legendSize;
-			} else {
-				symbol.fontSize = keyboard.keyboardFontSize;
-			}
-			symbol.pos(legendOffsetX + symbol.topX, legendOffsetY + symbol.topY);
-			symbol.depth = 50;
-
-			keyLegends.push(symbol);
 		}
 		return keyLegends;
 	}
@@ -192,4 +231,31 @@ class KeyMaker {
 		color.lightnessHSLuv -= 0.15;
 		return color;
 	}
+
+/**
+ * usage:
+ * index = <legend index>
+ * X = KeyMaker.snapAtThirds (index);
+ * Y = KeyMaker.snapAtThirds (Std.int(index / 3));
+ * 
+ * legend.anchor (X, Y);
+ * 
+ * in the case the index > 8 we have side prints!
+ * 
+ */
+ 
+	public static function snapAtThirds (f:Float):Float {
+		// return the extreme of the third
+		// <--left (zero), middle | , right (max) -->
+		switch (f % 3) {
+			case 2:
+				return 1;
+			case 1:
+				return 0.5;
+			default:
+				// we default to top & left
+				return 0;
+	 }
+	}
+
 }
